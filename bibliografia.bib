@@ -9,13 +9,13 @@
 
 
 
-@article{wscad2017,
-	author = { Emmanuel and Alyson D. Pereira and Rodrigo C. O. Rocha and Márcio Castro and Luís F. W. Góes},
-	title = {Execução Energeticamente Eficiente de Aplicações Estêncil com o Processador Manycore MPPA-256},
-	journal = {XVIII Simpósio em Sistemas Computacionais de Alto Desempenho - WSCAD},
+@inproceedings{wscad2017,
+	address = {Campinas, SP},
+	author = {{PODEST{\'{A}} Jr.}, Emmanuel and Pereira, Alyson Deives and Rocha, Rodrigo Caetano de Oliveira and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
+	booktitle = {XVIII Simp{\'{o}}sio em Sistemas Computacionais de Alto Desempenho (WSCAD)},
+	issn = {2358-6613},
+	title = {{Execu{\c{c}}{\~{a}}o Energeticamente Eficiente de Aplica{\c{c}}{\~{o}}es Est{\^{e}}ncil com o Processador Manycore MPPA-256}},
 	year = {2017},
-	keywords = {},
-	abstract = {Neste artigo é proposta uma adaptação do framework PSkel para o processador manycore de baixa potência MPPA-256. O framework permite simplificar o desenvolvimento de aplicações estêncil iterativas para o MPPA-256, escondendo do desenvolvedor detalhes de implementação. Os resultados obtidos no MPPA-256 mostraram uma redução do consumo de energia de aplicações estêncil iterativas de até 1.45x em comparação com um processador multicore Intel Broadwell.},
 	url = {https://portaldeconteudo.sbc.org.br/index.php/wscad/article/view/238}
 }
 
@@ -127,15 +127,6 @@
 	keywords = {gpu, opencl, overlapped tiling, stencil},
 } 
 
-@inproceedings{PodestaJr.2017,
-address = {Campinas, SP},
-author = {{Podest{\'{a}} Jr.}, Emmanuel and Pereira, Alyson Deives and Rocha, Rodrigo Caetano de Oliveira and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
-booktitle = {Simp{\'{o}}sio em Sistemas Computacionais de Alto Desempenho (WSCAD)},
-issn = {2358-6613},
-title = {{Execu{\c{c}}{\~{a}}o Energeticamente Eficiente de Aplica{\c{c}}{\~{o}}es Est{\^{e}}ncil com o Processador Manycore MPPA-256}},
-year = {2017}
-}
-
 @INPROCEEDINGS{buono13, 
 author={D. Buono and M. Danelutto and S. Lametti and M. Torquati}, 
 booktitle={2013 21st Euromicro International Conference on Parallel, Distributed, and Network-Based Processing}, 
@@ -146,35 +137,6 @@ doi={10.1109/PDP.2013.27},
 ISSN={1066-6192}, 
 }
 
-@article{Castro-IA3-JPDC:2014,
-author = {Francesquini, Emilio and Castro, M{\'{a}}rcio and Penna, Pedro H. and Dupros, Fabrice and de Freitas, Henrique Cota and Navaux, Philippe Olivier Alexandre and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-doi = {10.1016/j.jpdc.2014.11.002},
-journal = {J. Parallel Distrib. Comput.},
-pages = {32--48},
-title = {On the Energy Efficiency and Performance of Irregular Applications on Multicore, {NUMA} and Manycore Platforms},
-volume = {76},
-year = {2014}
-}
-
-@inproceedings{Castro-Podesta-ERAD:2017,
-address = {Iju{\'{i}}, Brazil},
-author = {{Podest{\'{a}} Jr.}, Emmanuel and Pereira, Alyson D and Rocha, Rodrigo Caetano and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
-booktitle = {ERAD/RS},
-pages = {395--398},
-publisher = {SBC},
-title = {{Uma Implementa{\c{c}}{\~{a}}o do Framework PSkel com Suporte a Aplica{\c{c}}{\~{o}}es Est{\^{e}}ncil Iterativas para o Processador MPPA-256}},
-year = {2017}
-}
-
-@article {pereira15,
- author = {Pereira, Alyson D. and Ramos, Luiz and G\'{o}es, Lu\'{i}s F. W.},
- title = {{PSkel}: A Stencil Programming Framework for CPU-GPU Systems},
- journal = {Concurrency and Computation: Practice and Experience},
- year = {2015},
- pages = {4938--4953},
- volume = {27},
- number = {17},
-}
 
 @inproceedings{thoraransen16, 
 author={S. Thorarensen and R. Cuello and C. Kessler and L. Li and B. Barry}, 
@@ -183,4 +145,34 @@ title={Efficient Execution of SkePU Skeleton Programs on the Low-Power Multicore
 year={2016}, 
 pages={398-402},  
 doi={10.1109/PDP.2016.123},
+}
+
+@inproceedings{gysi15,
+  author={T. Gysi and T. Grosser and T. Hoefler},
+  title= {{MODESTO}: Data-centric Analytic Optimization of Complex Stencil Programs on Heterogeneous Architectures},
+  booktitle = {International Conference on Supercomputing (ICS)},
+  pages={177--186},
+  address={Irvine, USA},
+  publisher={ACM},
+  year={2015}
+}
+
+@inproceedings{SCCEnergy:2012,
+address = {New Brunswick, Canada},
+author = {Totoni, Ehsan and Behzad, Babak and Ghike, Swapnil and Torrellas, Josep},
+booktitle = {IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
+doi = {10.1109/ISPASS.2012.6189208},
+pages = {78--87},
+publisher = {IEEE Computer Society},
+title = {Comparing the Power and Performance of Intel's {SCC} to State-of-the-Art {CPUs} and {GPUs}},
+year = {2012}
+}
+
+@article{Castro-Souza-CCPE:2016,
+author = {Souza, Matheus A. and others},
+doi = {10.1002/cpe.3892},
+issn = {1532-0634},
+journal = {Concurrency and Computation: Practice and Experience},
+title = {{CAP} Bench: A Benchmark Suite for Performance and Energy Evaluation of Low-power Many-core Processors},
+year = {2016}
 }
