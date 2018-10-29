@@ -68,6 +68,8 @@
 \usepackage{lipsum}				% para geração de dummy text
 \usepackage{todonotes}          % todos
 \usepackage{pdfpages}
+% \usepackage{subfigure}
+
 % ---
 
 % ---
@@ -79,6 +81,7 @@
 % --- 
 % CONFIGURAÇÕES DE PACOTES
 % --- 
+\input{utils/snippets.tex}
 
 % ---
 % Configurações do pacote backref
@@ -125,20 +128,22 @@ Ciência da Computação para a obtenção do Grau de Bacharel em Ciência da Co
 
 % informações do PDF
 \makeatletter
-% set section title to capital letters in summary
-\let\oldcontentsline\contentsline
-\def\contentsline#1#2{%
-  \expandafter\ifx\csname l@#1\endcsname\l@section
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi
-  {%
-    \oldcontentsline{#1}{\MakeTextUppercase{#2}}%
-  }{%
-    \oldcontentsline{#1}{#2}%
-  }%
-}
+
+% % set section title to capital letters in summary
+% \let\oldcontentsline\contentsline
+% \def\contentsline#1#2{%
+%   \expandafter\ifx\csname l@#1\endcsname\l@section
+%     \expandafter\@firstoftwo
+%   \else
+%     \expandafter\@secondoftwo
+%   \fi
+%   {%
+%     \oldcontentsline{#1}{\MakeTextUppercase{#2}}%
+%   }{%
+%     \oldcontentsline{#1}{#2}%
+%   }%
+% }
+
 \hypersetup{
      	%pagebackref=true,
 		pdftitle={\@title}, 
@@ -176,6 +181,7 @@ Ciência da Computação para a obtenção do Grau de Bacharel em Ciência da Co
 % Início do documento
 % ----
 \begin{document}
+
 
 % Seleciona o idioma do documento (conforme pacotes do babel)
 %\selectlanguage{english}
@@ -309,12 +315,13 @@ Ciência da Computação para a obtenção do Grau de Bacharel em Ciência da Co
 % RESUMOS
 % ---
 
+
 % resumo em português
 \setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
 \begin{resumo}
- \todo[inline]{ToDo}
+	Uma nova classe de \emph{chips} altamente paralelos de baixo consumo energéitco que lidam com a restrição de energia foram descobertos. Os processadores Sunway SW26010 e Kalray MPPA-256 são exemplos deles, entregando mais de duzentos núcleos de processamento em um único \emph{chip} de baixo consumo energético. Apesar de apresentarem melhor eficiência energética do que os processadores \emph{multicore} de propósito geral, características arquiteturais como a limitada quantidade de memória ditribuída no \emph{chip} torna o desenvolvimento de aplicações científicas paralelas eficientes uma tarefa desafiadora. Neste projeto foram propostas otimizações ao \fw PSkelMPPA, que prove uma abstração única e de alto nível para programação estêncil no processador \mppa, livrando os programadores de serem responsáveis pela tarefa de explicitamente lidar com a comunicação e com o modelo de programação paralela híbrida do \mppa.
 
- \textbf{Palavras-chave}: ToDo.
+	\textbf{Palavras-chave}: \Manycore. \mppa. Processamento de alto desempenho. Eficiência energética.
 \end{resumo}
 
 % resumo em inglês
@@ -342,29 +349,34 @@ Ciência da Computação para a obtenção do Grau de Bacharel em Ciência da Co
 % ---
 % inserir lista de tabelas
 % ---
-\pdfbookmark[0]{\listtablename}{lot}
-\listoftables*
-\cleardoublepage
+% \pdfbookmark[0]{\listtablename}{lot}
+% \listoftables*
+% \cleardoublepage
 % ---
 
 % ---
 % inserir lista de abreviaturas e siglas
 % ---
 \begin{siglas}
-  \item[CPU] \textit{Central Processing Unit}
-  \item[MPI] \textit{Message Passing Interface}
+  \item[\mppa] \textit{Massively Parallel Processor Array}
+  \item[\io] Entrada e Saída
+  \item[\noc] \textit{Network-on-Chip}
+  \item[\cpu] \textit{Central processing unit}
+  \item[\gpu] \textit{Graphics processing unit}
+  \item[\api] \textit{Application Programming Interface}
+  \item[\ipc] \textit{Inter-Process Communication}
 \end{siglas}
 % ---
 
 % ---
 % inserir lista de símbolos
 % ---
-\begin{simbolos}
-  \item[$ \Gamma $] Letra grega Gama
-  \item[$ \Lambda $] Lambda
-  \item[$ \zeta $] Letra grega minúscula zeta
-  \item[$ \in $] Pertence
-\end{simbolos}
+% \begin{simbolos}
+%   \item[$ \Gamma $] Letra grega Gama
+%   \item[$ \Lambda $] Lambda
+%   \item[$ \zeta $] Letra grega minúscula zeta
+%   \item[$ \in $] Pertence
+% \end{simbolos}
 % ---
 
 % ---
@@ -383,98 +395,30 @@ Ciência da Computação para a obtenção do Grau de Bacharel em Ciência da Co
 \textual
 
 % ----------------------------------------------------------
-% Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
+% Introdução
 % ----------------------------------------------------------
-\chapter[Introdução]{Introdução}
+\input{capitulos/01-introducao.tex}
+
 % ----------------------------------------------------------
+% Fundamentação Teórica
+% ----------------------------------------------------------
+\input{capitulos/02-fundamentacao-teorica.tex}
 
-Este documento e seu código-fonte são exemplos de referência de uso da classe
-\textsf{abntex2} e do pacote \textsf{abntex2cite}. O documento 
-exemplifica a elaboração de trabalho acadêmico (tese, dissertação e outros do
-gênero) produzido conforme a ABNT NBR 14724:2011 \emph{Informação e documentação
-- Trabalhos acadêmicos - Apresentação}.
+% ----------------------------------------------------------
+% Trabalhos relacionados
+% ----------------------------------------------------------
+\input{capitulos/03-trabalhos-relacionados.tex}
 
-A expressão ``Modelo Canônico'' é utilizada para indicar que \abnTeX\ não é
-modelo específico de nenhuma universidade ou instituição, mas que implementa tão
-somente os requisitos das normas da ABNT. Uma lista completa das normas
-observadas pelo \abnTeX\ é apresentada em \citeonline{abntex2classe}.
+% ----------------------------------------------------------
+% Otimização PSkel-MPPA
+% ----------------------------------------------------------
+% \input{capitulos/04-otimizacao-pskelmppa.tex}
 
-Sinta-se convidado a participar do projeto \abnTeX! Acesse o site do projeto em
-\url{http://www.abntex.net.br/}. Também fique livre para conhecer,
-estudar, alterar e redistribuir o trabalho do \abnTeX, desde que os arquivos
-modificados tenham seus nomes alterados e que os créditos sejam dados aos
-autores originais, nos termos da ``The \LaTeX\ Project Public
-License''\footnote{\url{http://www.latex-project.org/lppl.txt}}.
+% ----------------------------------------------------------
+% Experimento
+% ----------------------------------------------------------
+% \input{capitulos/05-experimentos.tex}
 
-Encorajamos que sejam realizadas customizações específicas deste exemplo para
-universidades e outras instituições --- como capas, folha de aprovação, etc.
-Porém, recomendamos que ao invés de se alterar diretamente os arquivos do
-\abnTeX, distribua-se arquivos com as respectivas customizações.
-Isso permite que futuras versões do \abnTeX~não se tornem automaticamente
-incompatíveis com as customizações promovidas. Consulte
-\citeonline{abntex2-wiki-como-customizar} par mais informações.
-
-Este documento deve ser utilizado como complemento dos manuais do \abnTeX\ 
-\cite{abntex2classe,abntex2cite,abntex2cite-alf} e da classe \textsf{memoir}
-\cite{memoir}. 
-
-Esperamos, sinceramente, que o \abnTeX\ aprimore a qualidade do trabalho que
-você produzirá, de modo que o principal esforço seja concentrado no principal:
-na contribuição científica.
-
-Equipe \abnTeX 
-
-Lauro César Araujo
-
-\section[Teste]{Teste}
-
-
-% ---
-% Capitulo de revisão de literatura
-% ---
-\chapter{Lorem ipsum dolor sit amet}
-% ---
-
-% ---
-\section{Aliquam vestibulum fringilla lorem}
-aaaa
-\subsection{Aliquam vestibulum fringilla lorem}
-aa
-\subsubsection{Aliquam vestibulum fringilla lorem}
-aa
-\subsubsubsection{Aliquam vestibulum fringilla lorem}
-aa
-% ---
-
-\lipsum[1]
-
-\lipsum[2-3]
-
-
-% ---
-% primeiro capitulo de Resultados
-% ---
-\chapter{Lectus lobortis condimentum}
-% ---
-
-% ---
-\section{Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae}
-% ---
-
-\lipsum[21-22]
-
-% ---
-% segundo capitulo de Resultados
-% ---
-\chapter{Nam sed tellus sit amet lectus urna ullamcorper tristique interdum
-elementum}
-% ---
-
-% ---
-\section{Pellentesque sit amet pede ac sem eleifend consectetuer}
-% ---
-
-\lipsum[24]
 
 % ----------------------------------------------------------
 % Finaliza a parte no bookmark do PDF
@@ -483,13 +427,11 @@ elementum}
 % ----------------------------------------------------------
 \phantompart
 
-% ---
+% ----------------------------------------------------------
 % Conclusão
-% ---
-\chapter{Conclusão}
-% ---
+% ----------------------------------------------------------
+% \input{capitulos/06-conclusao.tex}
 
-\lipsum[31-33]
 
 % ----------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
@@ -500,7 +442,7 @@ elementum}
 % ----------------------------------------------------------
 % Referências bibliográficas
 % ----------------------------------------------------------
-\bibliography{bibliography}
+\bibliography{bibliografia}
 
 % ----------------------------------------------------------
 % Glossário
@@ -523,16 +465,9 @@ elementum}
 \partapendices
 
 % ----------------------------------------------------------
-\chapter{Quisque libero justo}
+% Apêndice A
 % ----------------------------------------------------------
-
-\lipsum[50]
-
-% ----------------------------------------------------------
-\chapter{Nullam elementum urna vel imperdiet sodales elit ipsum pharetra ligula
-ac pretium ante justo a nulla curabitur tristique arcu eu metus}
-% ----------------------------------------------------------
-\lipsum[55-57]
+% \chapter{}
 
 \end{apendicesenv}
 % ---
@@ -550,23 +485,11 @@ ac pretium ante justo a nulla curabitur tristique arcu eu metus}
 % Imprime uma página indicando o início dos anexos
 \partanexos
 
-% ---
-\chapter{Morbi ultrices rutrum lorem.}
-% ---
-\lipsum[30]
+% ----------------------------------------------------------
+% Anexo A
+% ----------------------------------------------------------
+% \chapter{}
 
-% ---
-\chapter{Cras non urna sed feugiat cum sociis natoque penatibus et magnis dis
-parturient montes nascetur ridiculus mus}
-% ---
-
-\lipsum[31]
-
-% ---
-\chapter{Fusce facilisis lacinia dui}
-% ---
-
-\lipsum[32]
 
 \end{anexosenv}
 
