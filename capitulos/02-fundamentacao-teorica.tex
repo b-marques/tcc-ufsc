@@ -1,1 +1,60 @@
 \chapter[Fundamentação Teórica]{Fundamentação Teórica}
+
+Esta seção apresenta a fundamentação teórica sobre o processador \textit{manycore} \mppa e o \textit{framework} PSkel e sua adaptação utilizada nesse trabalho.
+
+\section{MPPA-256}
+\label{subsec:mppa}
+
+O \mppa é um processador \textit{manycore} desenvolvido pela empresa francesa
+Kalray. Esse processador possui 256 núcleos e usuário e 32 núcleos de sistema para processamento a 400 MHz. Esses núcleos estão distribuídos entre 16 \textit{clusters} de computação e 4 \textit{clusters} de \textit{Input/Output}(\io), que se comunicam através de NoCs de dados e controle. O processador utilizado no desenvolver deste projeto de pesquisa possui uma memória global de baixa potência (LPDDR3) de 2GB conectada a um dos susistemas de \io. A arquitetura do \mppa é ilustrada na Figura~\ref{fig:mppaOverall}. Cada cluster de computação tem os seguintes componentes:
+
+\begin{itemize}
+    \item 16 núcleos chamados de \textit{Processing Elements} (\pes), que são responsáveis por executar as \textit{threads} de usuário (uma \textit{thread} por \pe), e não pode ser interrompida ou preemptada;
+    
+    \item um \textit{Resource Manager} (\rman), responsável por executar o sistema operacional e gerenciar a comunicação;
+    
+    \item uma memória compartilhada de baixa latência de 2MB, que permite um grande banda e fluxo e dados e controle entre os \pes presentes no mesmo \textit{cluster} de computação; e
+    
+    \item dois controladores de NoC, um para dados e outro para controle.
+    
+\end{itemize}
+
+
+% \begin{figure}[t]
+% 	\centering
+% 	\subfigure[\mppa.]{\includegraphics[width=0.3\textwidth]{figs/mppa-overview.pdf}\label{fig:mppaOverall}}
+% 	\qquad
+% 	\subfigure[O padrão estêncil.]{\includegraphics[width=0.38\textwidth]{figs/stencilComputation.pdf}\label{fig:stencil}}
+%     \caption{Visão geral do \mppa e do padrão estêncil~\cite{Castro-Podesta-ERAD:2017}.}
+%     \label{fig:config}
+% \end{figure}
+
+Trabalhos anteriores mostraram que desenvolver aplicações paralelas otimizadas
+para o \mppa é um grande desafio~\cite{Castro-IA3-JPDC:2014} devido a alguns
+fatores importantes, tais como: o modelo de memória distribuída presente no
+\mppa, a capacidade de memória dentro do \textit{chip} e a comunicação explícita
+através da \noc. Mais detalhes sobre esses desafios são apresentados em
+~\cite{Castro-Podesta-ERAD:2017}.
+
+\section{Padrão estêncil e PSkel}
+\label{subsec:pskel}
+
+O padrão estêncil, ilustrado pela Figura~\ref{fig:stencil}, funciona da
+seguinte forma. Para cada elemento de
+uma estrutura $n$-dimensional é computado um novo valor relativo aos vizinhos do
+elemento atual. Os vizinhos de um elemento são determinados pela máscara da
+computação. Por fim, cada novo valor computado é atribuído à sua célula
+respectiva em uma estrutura $n$-dimensional de saída. Em aplicações
+estêncil iterativas, a estrutura de saída é utilizada como
+estrutura de entrada de uma nova iteração da aplicação.
+
+O \pskel é um \fw de programação em alto nível para aplicações baseadas no
+padrão estêncil, baseado no conceito de esqueletos paralelos, oferecendo suporte para a execução dessas aplicações em
+ambientes heterogêneos, incluindo \cpu e \gpu. \pskel oferece um interface única de programação, desacoplada do \textit{back-end} de execução, permitindo que o usuário se preocupe apenas em implementar o \textit{kernel} estêncil que descreve a computação, enquanto o \fw fica responsável pela tradução das abstrações descritas para código paralelo de baixo nível em C++, gestão de memória e transferência de dados, tudo isso de forma transparente paar o usuário~\cite{pereira15}.
+
+
+\section{PSkel-MPPA}
+\label{subsec:pskel-mppa}
+
+A adaptação PSkel-MPPA, é uma adaptação do \pskel proposta por~\cite{PodestaJr.2017}, ela faz uso de uma \api similar à POSIX \ipc para comunicação, e será tratada como \ipc no decorrer deste relatório. Nela, são utilizados portais de comunicação para o envio de dados e o método de \textit{strides}  para gerenciar explicitamente o envio e recebimento de \textit{tiles}. Essa adaptação possíbilita o uso do \fw PSkel com o processador \textit{manycore} \mppa.
+
