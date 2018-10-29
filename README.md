@@ -4,9 +4,7 @@ Para compilação do pdf:
 
 `pdflatex -> biber -> pdflatex -> pdflatex -> pdflatex -> biber -> pdflatex`
 
-=================
-ufscthesisx
-=================
+# ufscthesisx
 
 Modelo Canônico de TCC, Monografia, Dissertação, Tese ou Relatório de Pós--Doutorado da UFSC com
 abnTeX2. Originado de endereço https://github.com/AdrianoRuseler/abntex2-ufsc com o nome
