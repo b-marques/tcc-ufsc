@@ -61,6 +61,7 @@ section=TITLE,  % Título de seções em caixa alta
 %     }
 % }
 
+\input{utils/snippets.tex}
 %----------------------------------------------------------------------------------------
 %   LOAD UFSCThesis style
 %----------------------------------------------------------------------------------------
@@ -231,32 +232,32 @@ section=TITLE,  % Título de seções em caixa alta
     \setlength\afterchapskip{20pt}
 
     % Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
-    \include{chapters/intro}
+    \include{chapters/01-introducao}
 
 
 
     % Capitulo com exemplos de comandos inseridos de arquivo externo
-    \include{chapters/chapter_1}
+    \include{chapters/02-fundamentacao-teorica}
 
 
     % Capitulo de revisão de literatura
-    \include{chapters/chapter_2}
+    \include{chapters/03-trabalhos-relacionados}
 
-    % Primeiro capitulo de Resultados
-    \include{chapters/chapter_3}
+    % Capitulo de Desenvolvimento
+    \include{chapters/04-otimizacao-pskelmppa}
 
-    % Segundo capitulo de Resultados
-    \include{chapters/chapter_4}
-
-
-
+    % Capitulo de Resultados
+    \include{chapters/05-experimentos}
+    
+    
+    
     % Finaliza a parte no bookmark do PDF
     % para que se inicie o bookmark na raiz
     % e adiciona espaço de parte no Sumário
     \phantompart
-
+    
     % Conclusão (outro exemplo de capítulo sem numeração e presente no sumário)
-    \include{chapters/conclusion}
+    \include{chapters/06-conclusao}
 
 
 
@@ -287,7 +288,7 @@ section=TITLE,  % Título de seções em caixa alta
         \setlength\midchapskip{20pt}
         \setlength\afterchapskip{20pt}
 
-        \include{aftertext/apendice_a}
+        % \include{aftertext/apendice_a}
     \end{apendicesenv}
 
     % Anexos, inicia os anexos
@@ -299,8 +300,8 @@ section=TITLE,  % Título de seções em caixa alta
         \setlength\midchapskip{20pt}
         \setlength\afterchapskip{20pt}
 
-        \include{aftertext/anexo_a}
-        \include{aftertext/anexo_b}
+        % \include{aftertext/anexo_a}
+        % \include{aftertext/anexo_b}
     \end{anexosenv}
 
     % INDICE REMISSIVO
