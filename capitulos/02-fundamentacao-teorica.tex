@@ -1,6 +1,6 @@
 \chapter[Fundamentação Teórica]{Fundamentação Teórica}
 
-Esta seção apresenta a fundamentação teórica sobre o processador \textit{manycore} \mppa e o \textit{framework} PSkel e sua adaptação utilizada nesse trabalho.
+Esta seção apresenta a fundamentação teórica sobre o processador \textit{manycore} \mppa e o \textit{framework} PSkel, sua adaptação utilizada nesse trabalho.
 
 \section{MPPA-256}
 \label{subsec:mppa}
@@ -19,22 +19,30 @@ Kalray. Esse processador possui 256 núcleos e usuário e 32 núcleos de sistema
     
 \end{itemize}
 
+\begin{figure}
+    \centering
+    \caption{Arquitetura do MPPA-256.}
+    \includegraphics[width=0.5\textwidth]{figs/mppa-overview.pdf} \\
+    Fonte: ...
+    \label{fig:mppaOverall}
+\end{figure}
 
-% \begin{figure}[t]
-% 	\centering
-% 	\subfigure[\mppa.]{\includegraphics[width=0.3\textwidth]{figs/mppa-overview.pdf}\label{fig:mppaOverall}}
-% 	\qquad
-% 	\subfigure[O padrão estêncil.]{\includegraphics[width=0.38\textwidth]{figs/stencilComputation.pdf}\label{fig:stencil}}
-%     \caption{Visão geral do \mppa e do padrão estêncil~\cite{Castro-Podesta-ERAD:2017}.}
-%     \label{fig:config}
-% \end{figure}
+\begin{figure}
+    \centering
+    \caption{O padrão estêncil.}
+    \includegraphics[width=0.5\textwidth]{figs/stencilComputation.pdf} \\
+    Fonte: ...
+    \label{fig:stencil}
+\end{figure}
+
+
 
 Trabalhos anteriores mostraram que desenvolver aplicações paralelas otimizadas
-para o \mppa é um grande desafio~\cite{Castro-IA3-JPDC:2014} devido a alguns
+para o \mppa é um grande desafio~\cite{francesquini:hal-01092325} devido a alguns
 fatores importantes, tais como: o modelo de memória distribuída presente no
 \mppa, a capacidade de memória dentro do \textit{chip} e a comunicação explícita
 através da \noc. Mais detalhes sobre esses desafios são apresentados em
-~\cite{Castro-Podesta-ERAD:2017}.
+~\cite{wscad2017}.
 
 \section{Padrão estêncil e PSkel}
 \label{subsec:pskel}
@@ -50,7 +58,7 @@ estrutura de entrada de uma nova iteração da aplicação.
 
 O \pskel é um \fw de programação em alto nível para aplicações baseadas no
 padrão estêncil, baseado no conceito de esqueletos paralelos, oferecendo suporte para a execução dessas aplicações em
-ambientes heterogêneos, incluindo \cpu e \gpu. \pskel oferece um interface única de programação, desacoplada do \textit{back-end} de execução, permitindo que o usuário se preocupe apenas em implementar o \textit{kernel} estêncil que descreve a computação, enquanto o \fw fica responsável pela tradução das abstrações descritas para código paralelo de baixo nível em C++, gestão de memória e transferência de dados, tudo isso de forma transparente paar o usuário~\cite{pereira15}.
+ambientes heterogêneos, incluindo \cpu e \gpu. \pskel oferece um interface única de programação, desacoplada do \textit{back-end} de execução, permitindo que o usuário se preocupe apenas em implementar o \textit{kernel} estêncil que descreve a computação, enquanto o \fw fica responsável pela tradução das abstrações descritas para código paralelo de baixo nível em C++, gestão de memória e transferência de dados, tudo isso de forma transparente paar o usuário~\cite{CPE:CPE3479}.
 
 
 \section{PSkel-MPPA}
