@@ -1,0 +1,311 @@
+%----------------------------------------------------------------------------------------
+%   File settings
+%----------------------------------------------------------------------------------------
+
+% Comment this, unless you are debugging pages' badness Underfull & Overflow
+% https://tex.stackexchange.com/questions/115908/geometry-showframe-landscape
+%
+% What is the difference between \usepackage{showframe} and \usepackage[showframe]{geometry}?
+% https://tex.stackexchange.com/questions/387077/what-is-the-difference-between-usepackageshowframe-and-usepackageshowframe
+%
+% How to do the memoir headings fix but not have my text going over the page bottom margins?
+% https://tex.stackexchange.com/questions/387257/how-to-do-the-memoir-headings-fix-but-not-have-my-text-going-over-the-page-botto
+%
+% Print page margins of a document, for debugging bad boxes
+% https://tex.stackexchange.com/questions/14508/print-page-margins-of-a-document
+% \usepackage[showframe,pass]{geometry}
+
+
+% To use the font Times New Roman, instead of the default LaTeX font
+% more up-to-date than '\usepackage{mathptmx}'
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+
+% Novo list of (listings) para QUADROS usando newfloat
+\usepackage{newfloat}
+\makeatletter
+%% we define a helper macro for adjusting lists of new floats to
+%% accept a * behind them for not being shown in the TOC, like
+%% the other list printing commands in memoir
+% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
+\newcommand{\AdjustForMemoir}[1]{%
+  \csletcs{kept@listof#1}{listof#1}%
+  \csdef{listof#1}{%
+    \@ifstar
+     {\csappto{newfloat@listof#1@hook}{\append@star}%
+      \csuse{kept@listof#1}}%
+     {\csuse{kept@listof#1}}%
+  }
+}
+\def\append@star#1{#1*}
+\makeatother
+% \newcommand{\quadroname}{Quadro}
+% \newcommand{\listofquadrosname}{Lista de Quadros}
+\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=Quadro,within=chapter,listname=Lista de Quadros]{quadro}
+\AdjustForMemoir{quadro}
+\newlistentry{quadro}{loq}{0}
+
+
+
+% Thesis settings
+\newcommand{\brazilword}[1]{\foreignlanguage{brazil}{#1}}
+\newcommand{\englishword}[1]{\foreignlanguage{english}{#1}}
+
+\lang % Switch between english and brazil for big text blocks
+{\includecomment{englishtext}\excludecomment{braziltext}}
+{\includecomment{braziltext}\excludecomment{englishtext}}
+
+% What is the difference between \def and \newcommand?
+% https://tex.stackexchange.com/questions/655/what-is-the-difference-between-def-and-newcommand
+\def\mytextpreliminarylistname{\lang{Brief Table of Contents}{Breve Sumário}}
+
+% How to manually set where a word is split?
+% https://tex.stackexchange.com/questions/182569/how-to-manually-set-where-a-word-is-split
+\hyphenation{Ge-la-im}
+
+
+% Patch the `abntex2` citacao environment
+\xpatchcmd{\citacao}
+{\list{}}
+{\list{}{\topsep=0pt}}
+{}
+{\PackageWarning{ufscthesisx}{Citation \topsep is not patched. The 'citacao' environment must be
+patched with 'topsep=0pt' but it failed. This is probably due an update on the main class 'abnTeX2',
+therefore the \topsep patch must need to be updated accordingly}}
+
+% Remove the colon appended to theses variables, allowing us to use other separators
+\addto\captionsbrazil
+{
+    \renewcommand{\orientadorname}{Orientador}
+    \renewcommand{\coorientadorname}{Coorientador}
+}
+
+% Create caption English translations as the sections headers
+% https://tex.stackexchange.com/questions/8564/what-is-the-right-way-to-redefine-macros-defined-by-babel
+\addto\captionsenglish
+{
+    %% adjusts names from abnTeX2
+    \renewcommand{\folhaderostoname}{Title page}
+    \renewcommand{\epigraphname}{Epigraph}
+    \renewcommand{\dedicatorianame}{Dedication}
+    \renewcommand{\errataname}{Errata sheet}
+    \renewcommand{\agradecimentosname}{Acknowledgements}
+    \renewcommand{\anexoname}{ANNEX}
+    \renewcommand{\anexosname}{Annex}
+    \renewcommand{\apendicename}{APPENDIX}
+    \renewcommand{\apendicesname}{Appendix}
+    \renewcommand{\orientadorname}{Supervisor}
+    \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
+    \renewcommand{\folhadeaprovacaoname}{Approval}
+    \renewcommand{\resumoname}{Abstract}
+    \renewcommand{\listadesiglasname}{List of abbreviations and acronyms}
+    \renewcommand{\listadesimbolosname}{List of symbols}
+    \renewcommand{\fontename}{Source}
+    \renewcommand{\notaname}{Note}
+    %% adjusts names used by \autoref
+    \renewcommand{\pageautorefname}{page}
+    \renewcommand{\sectionautorefname}{section}
+    \renewcommand{\subsectionautorefname}{subsection}
+    \renewcommand{\subsubsectionautorefname}{subsubsection}
+    \renewcommand{\paragraphautorefname}{subsubsubsection}
+}
+
+% Source Code Settings in Document
+\makeatletter
+\@ifpackageloaded{listings}
+{
+\ifenglish
+    % These default values are already in English
+\else
+    % Listing -> Codigo fonte
+    \renewcommand{\lstlistingname}{Código--fonte}
+
+    % List of Listings -> Lista de códigos-fonte
+    \renewcommand{\lstlistlistingname}{Lista de códigos--fonte}
+
+    % Calculate the size of the header
+    \calculatelisteningsheader
+\fi
+}{}
+\makeatother
+
+
+% Espaçamentos entre linhas e parágrafos
+%
+% ifpackageloaded question
+% https://tex.stackexchange.com/questions/70212/ifpackageloaded-question
+\makeatletter
+\@ifclassloaded{memoir}
+{
+    % Estilo de capítulos, ver classe para maiores detalhes.Veja outros estilos em:
+    % http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/memoir/memman.pdf
+    \chapterstyle{VZ14}
+    \setlength\beforechapskip{0pt}
+    \setlength\midchapskip{15pt}
+    \setlength\afterchapskip{15pt}
+
+    % O tamanho do parágrafo é dado por:
+    \setlength{\parindent}{1.3cm}
+
+    % Controle do espaçamento entre um parágrafo e outro. Tente também
+    % \onelineskip
+    \setlength{\parskip}{0.2cm}
+
+    % Memoir: Warnings “The material used in the headers is too large” w/ accented titles
+    % https://tex.stackexchange.com/questions/387293/how-to-change-the-page-layout-with-memoir
+    \setheadfoot{30.0pt}{\footskip}
+    \checkandfixthelayout
+}{}
+\makeatother
+
+
+% Color settings across the document
+\makeatletter
+\@ifpackageloaded{xcolor}
+{
+    % RGB colors in absolute values from 0 to 255 by using `RGB` tag
+    \definecolor{darkblue}{RGB}{26,13,178}
+
+    % Definição de cores, RGB colors in percentage notation by using `rgb` tag
+    \definecolor{mygreen}{rgb}{0,0.6,0}
+    \definecolor{mygray}{rgb}{0.5,0.5,0.5}
+    \definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+    % Configurações de aparência do PDF final
+    \definecolor{figcolor}{rgb}{1,0.4,0}  % orange
+    \definecolor{tabcolor}{rgb}{1,0.4,0}  % orange
+    \definecolor{eqncolor}{rgb}{1,0.4,0}  % orange
+    \definecolor{linkcolor}{rgb}{1,0.4,0} % orange
+    \definecolor{citecolor}{rgb}{1,0.4,0} % orange
+    \definecolor{seccolor}{rgb}{0,0,1}    % blue
+    \definecolor{abscolor}{rgb}{0,0,1}    % blue
+    \definecolor{titlecolor}{rgb}{0,0,1}  % blue
+    \definecolor{biocolor}{rgb}{0,0,1}    % blue
+
+    % Alterando o aspecto da cor azul
+    \definecolor{blue}{RGB}{41,5,195}
+
+    % Informações do PDF
+    \@ifpackageloaded{hyperref}
+    {
+        \hypersetup
+        {
+            pdftitle={\@title},
+            colorlinks=true, % false: boxed links; true: colored links
+            linkcolor=darkblue, % color of internal links
+            citecolor=darkgreen, % color of links to bibliography
+            filecolor=black, % color of file links
+            urlcolor=linkcolor,
+            bookmarksdepth=4
+        }
+        \ifenglish
+            \hypersetup
+            {
+                pdfauthor={Author},
+                pdfsubject={Thesis' Abstract},
+                pdfcreator={LaTeX with abnTeX2 for UFSC},
+                pdfkeywords={abnt}{latex}{UFSC}{abntex2}{thesis},
+            }
+        \else
+            \hypersetup
+            {
+                pdfauthor={Autores},
+                pdfsubject={Resumo da tese},
+                pdfcreator={LaTeX com abnTeX2 para UFSC},
+                pdfkeywords={abnt}{latex}{UFSC}{abntex2}{tese},
+            }
+        \fi
+    }
+}{}
+\makeatother
+
+
+% Changing the font of the numbers in the ToC in the memoir class
+% https://tex.stackexchange.com/questions/14314/changing-the-font-of-the-numbers-in-the-toc-in-the-memoir-class
+\renewcommand{\cftpartfont}{\ABNTEXpartfont\color{ultramarine}}
+\renewcommand{\cftpartpagefont}{\ABNTEXpartfont\color{black}}
+
+\renewcommand{\cftchapterfont}{\ABNTEXchapterfont\color{ultramarine}}
+\renewcommand{\cftchapterpagefont}{\ABNTEXchapterfont\color{black}}
+
+\renewcommand{\cftsectionfont}{\ABNTEXsectionfont\color{ultramarine}}
+\renewcommand{\cftsectionpagefont}{\ABNTEXsectionfont\color{black}}
+
+\renewcommand{\cftsubsectionfont}{\ABNTEXsubsectionfont\color{ultramarine}}
+\renewcommand{\cftsubsectionpagefont}{\ABNTEXsubsectionfont\color{black}}
+
+\renewcommand{\cftsubsubsectionfont}{\ABNTEXsubsubsectionfont\color{ultramarine}}
+\renewcommand{\cftsubsubsectionpagefont}{\ABNTEXsubsubsectionfont\color{black}}
+
+\renewcommand{\cftparagraphfont}{\ABNTEXsubsubsubsectionfont\color{ultramarine}}
+\renewcommand{\cftparagraphpagefont}{\ABNTEXsubsubsubsectionfont\color{black}}
+
+
+% Backref package settings, pages with citations in bibliography
+\makeatletter
+\@ifpackageloaded{biblatex}
+{
+    \renewbibmacro*{pageref}
+    {
+        \iflistundef{pageref}
+        {\printtext{\lang{\autocap{n}o citation in the text}{\autocap{n}enhuma citação no texto}.}}
+        {%
+            \printtext
+            {%
+                \ifnumgreater{\value{citecounter}}{1}
+                    {\lang{\autocap{c}ited}{\autocap{c}itado} \arabic{citecounter} \lang{times}{vezes}}
+                    {\lang{\autocap{c}ited}{\autocap{c}itado} \arabic{citecounter} \lang{time}{vez}}
+            }%
+            \setunit{\addspace}%
+            \ifnumgreater{\value{pageref}}{1}
+                {\bibstring{backrefpages}\ppspace}
+                {\bibstring{backrefpage}\ppspace}%
+            \printlist[pageref][-\value{listtotal}]{pageref}%
+        }%
+    }
+
+    \DefineBibliographyStrings{brazil}
+    {
+        backrefpage  = {na página},
+        backrefpages = {nas páginas},
+    }
+
+    \DefineBibliographyStrings{english}
+    {
+        backrefpage  = {on page},
+        backrefpages = {on pages},
+    }
+}{}
+\makeatother
+
+
+% Memoir has another mechanism for the job: \cftsetindents{‹kind›}{indent}{numwidth}. Here kind is
+% chapter, section, or whatever; the indent specifies the ‘margin’ before the entry starts; and the
+% width is of the box into which the number is typeset (so needs to be wide enough for the largest
+% number, with the necessary spacing to separate it from what comes after it in the line.
+% http://www.tex.ac.uk/FAQ-tocloftwrong.html
+%
+% memoir: indentation of unnumbered sections in table of contents
+% https://tex.stackexchange.com/questions/264668/memoir-indentation-of-unnumbered-sections-in-table-of-contents
+%
+% Memoir ToC: indent the second line by number+space width in the previous line OR set standard
+% https://tex.stackexchange.com/questions/394227/memoir-toc-indent-the-second-line-by-numberspace
+
+% `\cftlastnumwidth` and these `\cftsetindents` are defined by the abntex2 class saying they obey
+% the `ABNTEXsumario-abnt-6027-2012`.
+% \newlength{\cftlastnumwidth}
+
+\setlength{\cftlastnumwidth}{\cftsubsubsectionnumwidth}
+\addtolength{\cftlastnumwidth}{-1em}
+
+% http://www.tex.ac.uk/FAQ-tocloftwrong.html
+% Use \setlength\cftsectionnumwidth{4em} to override all these values
+\cftsetindents{part}         {0em}{\cftlastnumwidth}
+\cftsetindents{chapter}      {0em}{\cftlastnumwidth}
+\cftsetindents{section}      {0em}{\cftlastnumwidth}
+\cftsetindents{subsection}   {0em}{\cftlastnumwidth}
+\cftsetindents{subsubsection}{0em}{\cftlastnumwidth}
+\cftsetindents{paragraph}    {0em}{\cftlastnumwidth}
+\cftsetindents{subparagraph} {0em}{\cftlastnumwidth}
+
+

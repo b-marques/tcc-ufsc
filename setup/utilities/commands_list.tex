@@ -1,0 +1,112 @@
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+\makeatletter
+
+
+
+\@ifundefined{hline}{       \def\hline{hline} }{}
+\@ifundefined{caption}{     \def\caption{caption} }{}
+\@ifundefined{RaggedRight}{ \def\RaggedRight{RaggedRight} }{}
+
+\@ifundefined{currenttime}{         \def\currenttime{Current Time} }{}
+\@ifundefined{lstlistingname}{      \def\lstlistingname{LST Listing Name} }{}
+\@ifundefined{lstlistoflistings}{   \def\lstlistoflistings{LST List of Listing} }{}
+\@ifundefined{mathfrak}{            \def\mathfrak{mathfrak} }{}
+\@ifundefined{resizebox}{           \def\resizebox{resizebox} }{}
+\@ifundefined{legend}{              \def\legend{legend} }{}
+\@ifundefined{url}{                 \def\url{url} }{}
+\@ifundefined{boldsymbol}{          \def\boldsymbol{boldsymbol} }{}
+\@ifundefined{texorpdfstring}{      \def\texorpdfstring{texorpdfstring} }{}
+\@ifundefined{ABNTEXfontereduzida}{ \def\ABNTEXfontereduzida{ABNTEXfontereduzida} }{}
+\@ifundefined{citeonline}{          \def\citeonline{citeonline} }{}
+
+% How to rename an existing command?
+% https://tex.stackexchange.com/questions/193379/how-to-rename-an-existing-command
+\newcommand{\supertiny}{\fontsize{2pt}{2.5pt}\selectfont}
+\usepackage{lmodern}
+
+% How to replace a command with a dummy one?
+% https://tex.stackexchange.com/questions/387394/how-to-replace-a-command-with-a-dummy-one
+\@ifundefined{includegraphics}
+{
+    \newcommand{\includegraphics}[3][]{ \detokenize{ \includegraphics[#1]{#2 #3} } }
+}{}
+
+\@ifundefined{resizebox}
+{
+    \newcommand{\resizebox}[3][]{ resizebox }
+}{}
+
+\@ifundefined{SI}
+{
+    \newcommand{\SI}[3][]{ SI }
+}{}
+
+\@ifundefined{includepdf}
+{
+    \newcommand{\includepdf}[3][]{ SI }
+}{}
+
+\@ifundefined{modifiedincludepdf}
+{
+    \newcommand{\modifiedincludepdf}[4][]
+    {
+        modifiedincludepdf
+    }
+}{}
+
+% How to create a dummy generic environment replacement?
+% https://tex.stackexchange.com/questions/387389/how-to-create-a-dummy-generic-environment-replacement
+\@ifundefined{longtable}
+{
+    \newenvironment{longtable}[0]
+    {longtable environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{sideways}
+{
+    \newenvironment{sideways}[0]
+    {sideways environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{landscape}
+{
+    \newenvironment{landscape}[0]
+    {landscape environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{lstlisting}
+{
+    \newenvironment{lstlisting}[0]
+    {lstlisting environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+
+
+\makeatother
+
+
