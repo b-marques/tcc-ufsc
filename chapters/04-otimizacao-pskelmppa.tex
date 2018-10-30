@@ -24,7 +24,7 @@ A Figura~\ref{fig:gputile} mostra a representação gráfica dessa técnica. Um 
 %
 Assim, \emph{tile} engordado $A^\ast_{i,j}$ possui deslocamentos $(\max\{iw^\prime - rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativos a $A$. Dessa maneira, determinar o tamanho das \emph{ghost zones} implica no \emph{trade-off} entre o custo de computação redundante e a redução de comunicação e sincronização na \noc quando se processa uma computação estêncil iterativa no \mppa.
 
-\begin{figure}[t]
+\begin{figure}[htb]
 	\centering
 	\caption{Técnica de \textit{tiling} 2D.}
 	\includegraphics[width=0.5\textwidth]{figs/tile.pdf} \\
@@ -32,7 +32,7 @@ Assim, \emph{tile} engordado $A^\ast_{i,j}$ possui deslocamentos $(\max\{iw^\pri
 	\label{fig:gputile}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htb]
 	\centering
 	\caption{Comunicações com \texttt{block2d}.}
 	\includegraphics[width=1\textwidth]{figs/pskel-mppa-fluxogram.pdf} \\
