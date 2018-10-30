@@ -12,7 +12,13 @@
 % Must be included before loading class
 \input{setup/setup}
 
-\PassOptionsToPackage{style=abnt,backref=true,backend=biber,citecounter=true}{biblatex}
+\PassOptionsToPackage{
+    justify=true,
+    style=abnt,
+    backref=true,
+    backend=biber,
+    citecounter=true
+}{biblatex}
 \AfterClass{memoir}
 {
     \RequirePackage{biblatex}
@@ -80,6 +86,8 @@ section=TITLE,  % Título de seções em caixa alta
 % Configurações adicionais by: Bruno Marques
 % alguns atalhos para escrita do texto:
 \input{utils/snippets.tex}
+% arruma o overflow nas referencias quando o tipo é numérico
+% \emergencystretch=0.3em
 
 
 
@@ -175,7 +183,7 @@ section=TITLE,  % Título de seções em caixa alta
 
 % Configurações do estilo de citação ABNT
 % \PassOptionsToPackage{style=abnt,backref=true,backend=biber,citecounter=true}{biblatex}
-
+% \PassOptionsToPackage{style=abnt,backend=biber}{biblatex}
 
 % Descomente a linha a seguir e comente a anterior se desejar utilizar outras configurações 
 % do biblatex como por exemplo, style=numeric, entre outros. 
@@ -285,8 +293,8 @@ section=TITLE,  % Título de seções em caixa alta
     \begingroup
         % Using BibTeX to make a list of references without having citations in the body of the document?
         % https://tex.stackexchange.com/questions/17128/using-bibtex-to-make-a-list-of-references-without
-        % \nocite{*}
-
+        \nocite{*}
+        % \nocite{negrão14}
         \printbibliography[title=REFERÊNCIAS]
     \endgroup
 
