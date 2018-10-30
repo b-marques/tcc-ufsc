@@ -12,6 +12,12 @@
 % Must be included before loading class
 \input{setup/setup}
 
+\PassOptionsToPackage{style=abnt,backref=true,backend=biber,citecounter=true}{biblatex}
+\AfterClass{memoir}
+{
+    \RequirePackage{biblatex}
+}
+
 % Uses abntex2 class
 \documentclass[
 10pt, %Padrão UFSC para versão final
@@ -72,6 +78,7 @@ section=TITLE,  % Título de seções em caixa alta
 
 
 % Configurações adicionais by: Bruno Marques
+% alguns atalhos para escrita do texto:
 \input{utils/snippets.tex}
 
 
@@ -167,7 +174,8 @@ section=TITLE,  % Título de seções em caixa alta
 \input{settings}
 
 % Configurações do estilo de citação ABNT
-\PassOptionsToPackage{style=abnt,backend=biber}{biblatex}
+% \PassOptionsToPackage{style=abnt,backref=true,backend=biber,citecounter=true}{biblatex}
+
 
 % Descomente a linha a seguir e comente a anterior se desejar utilizar outras configurações 
 % do biblatex como por exemplo, style=numeric, entre outros. 
