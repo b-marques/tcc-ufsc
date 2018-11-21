@@ -13,7 +13,7 @@
 \input{setup/setup}
 
 \PassOptionsToPackage{
-    justify=true,
+%    justify=true,
     style=abnt,
     backref=true,
     backend=biber,
@@ -73,6 +73,9 @@ section=TITLE,  % Título de seções em caixa alta
 %     }
 % }
 
+
+\usepackage{todonotes}
+\newcommand{\etal}{\textit{et al.\ }}
 
 %----------------------------------------------------------------------------------------
 %   LOAD UFSCThesis style
@@ -256,11 +259,8 @@ section=TITLE,  % Título de seções em caixa alta
     % Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
     \include{chapters/01-introducao}
 
-
-
     % Capitulo com exemplos de comandos inseridos de arquivo externo
     \include{chapters/02-fundamentacao-teorica}
-
 
     % Capitulo de revisão de literatura
     \include{chapters/03-trabalhos-relacionados}
@@ -268,9 +268,11 @@ section=TITLE,  % Título de seções em caixa alta
     % Capitulo de Desenvolvimento
     \include{chapters/04-otimizacao-pskelmppa}
 
-    % Capitulo de Resultados
-    % \include{chapters/05-experimentos}
+    % Capitulo de Cronograma
+     \include{chapters/05-cronograma}
     
+    % Capitulo de Conclusão
+     \include{chapters/06-conclusao}
     
     
     % Finaliza a parte no bookmark do PDF
