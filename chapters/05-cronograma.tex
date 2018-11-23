@@ -10,5 +10,55 @@
 \label{cap:cronograma}
 \phantomsection
 
+A Figura~\ref{fig:cronograma} apresenta o cronograma previsto para a realização das atividades descritas abaixo, e que serão realizadas durante o final do semestre de 2018 e primeiro semestre de 2019.
 
-\todo[inline]{Coloque aqui o cronograma para o TCC 2. Utilize o Ganttchart do latex para isso. Descreva textualmente as atividades apresentadas no cronograma.}
+\begin{itemize}
+	\item \textbf{A1: Proposta e implementação das otimizações.} Nesta etapa será realizada a proposta e a implementação das otimizações no \pskel{} através do uso da nova API de comunicação assíncrona.
+	
+	\item \textbf{A2: Realização de experimentos.} Nesta etapa serão realizados testes de desempenho comparativo entre a atual implementação e a implementação proposta neste trabalho, assim como a análise dos resultados obtidos.
+	
+	\item \textbf{A3: Escrita do rascunho do TCC II.} Nesta etapa será realizada a escrita do rascunho do TCC II. A entrega deste documento está prevista para a segunda semana do mês de maio.
+	
+	\item \textbf{A4: Preparação da defesa pública.} Preparação da apresentação oral do conteúdo deste trabalho para a defesa pública.
+	
+	\item \textbf{A5: Defesa pública.} Realização da defesa do projeto desenvolvido. Pretende-se realizar a defesa pública do trabalho na primeira semana do mês de junho.
+	
+	\item \textbf{A6: Correções e entrega da versão final do TCC.} Nesta etapa serão realizadas as correções e os ajustes da monografia e a entrega final do documento. A entrega da versão final está prevista para a quarta semana do mês de junho.
+\end{itemize}
+
+
+
+\begin{figure}
+    \caption{Cronograma de atividades.}\label{fig:cronograma}
+    \begin{center}
+     \begin{ganttchart}[
+       y unit title=0.4cm,
+       y unit chart=0.6cm,
+       hgrid,
+       vgrid={{dotted, dotted, dotted, black}},
+       title label font=\scriptsize,
+       title/.append style={fill=gray!30},
+       title height=1,
+       bar/.append style={fill=gray!30,rounded corners=2pt},
+       bar label font=\scriptsize,
+       group label font=\scriptsize,
+     ]{1}{14}
+    \gantttitle{\textbf{2018}}{2}
+	\gantttitle{\textbf{2019}}{12}\\
+    \gantttitle{\textbf{Dez}}{2}
+    \gantttitle{\textbf{Jan}}{2}
+    \gantttitle{\textbf{Fev}}{2}
+    \gantttitle{\textbf{Mar}}{2}
+    \gantttitle{\textbf{Abr}}{2}
+    \gantttitle{\textbf{Mai}}{2}
+    \gantttitle{\textbf{Jun}}{2}\\
+     
+     \ganttbar{A1}{1}{2} \\
+     \ganttbar{A2}{3}{7} \\
+     \ganttbar{A3}{7}{11} \\
+     \ganttbar{A4}{12}{12} \\
+     \ganttbar{A5}{13}{13} \\
+     \ganttbar{A6}{14}{14}
+     \end{ganttchart}
+  \end{center}
+\end{figure}
