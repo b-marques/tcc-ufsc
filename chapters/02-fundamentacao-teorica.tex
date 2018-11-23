@@ -49,7 +49,7 @@ Esta seção apresenta a fundamentação teórica sobre sistemas com múltiplos 
 \section{Sistemas com múltiplos processadores}
 \label{sec:multicpu}
 
-Tanenbaum~\cite{Tanenbaum:2014:MOS:2655363} classifica sistemas com múltiplos processadores em dois grupos, os sistemas multiprocessadores e os multicomputadores. Nesta seção serão apresentados os principais conceitos dos sistemas multiprocessadores e multicomputadores.
+\textit{Tanenbaum}~\cite{Tanenbaum:2014:MOS:2655363} classifica sistemas com múltiplos processadores em dois grupos, os sistemas multiprocessadores e os multicomputadores. Nesta seção serão apresentados os principais conceitos dos sistemas multiprocessadores e multicomputadores.
 
 \subsection{Multiprocessadores}
 \label{subsec:multiprocessadores}
@@ -84,9 +84,9 @@ Também existem os sistemas em \chip~-- \textit{System on a Chip} (SoC), compost
 \subsubsection{\textit{Chips} com muitos núcleos (\manycore)}
 \label{subsubsec:chips-manycore}
 
-Os \manycore são \multicore que contêm dezenas, centenas ou até milhares de núcleos. Embora não exista uma delimitação clara de quando um \multicore torna-se um \manycore, uma analogia utilizada é que um \multicore é um \manycore a partir do momento que a perda de um ou dois núcleos seja irrelevante. \todo[inline]{Referência?}
+Os \manycore são \multicore que contêm dezenas, centenas ou até milhares de núcleos. Embora não exista uma delimitação clara de quando um \multicore torna-se um \manycore, uma analogia utilizada é que um \multicore é um \manycore a partir do momento que a perda de um ou dois núcleos seja irrelevante \cite{Tanenbaum:2014:MOS:2655363}.
 
-A presença de um elevado número de núcleos em um mesmo \chip acarreta em impactos sobre a coerência de \textit{cache}, principalmente quanto ao custo e complexidade dos protocolos de coerência que atingem um limite a partir do qual ele passa a prejudicar o desempenho do sistema em questão. Devido a isso, processadores \textit{manycore} tendem a não utilizar \textit{caches} coerentes \cite{Tanenbaum:2014:MOS:2655363}
+A presença de um elevado número de núcleos em um mesmo \chip acarreta em impactos sobre a coerência de \textit{cache}, principalmente quanto ao custo e complexidade dos protocolos de coerência que atingem um limite a partir do qual ele passa a prejudicar o desempenho do sistema em questão. Devido a isso, processadores \textit{manycore} tendem a não utilizar \textit{caches} coerentes \cite{Tanenbaum:2014:MOS:2655363}.
 
 A presença de milhares de núcleos não é algo mais tão incomum, as unidades de processamento gráfico -- \textit{Graphic Processing Unit} (\gpu), presente em muitos sistemas computacionais de hoje em dia, são detentores de milhares de pequenos núcleos com enfoque no processamento de dados, e realizam muito menos operações de coerência de \textit{cache} e lógicas de controle que as \cpus de propósito geral. Estas mudanças estão refletidas na maneira de se programar para esses sistemas, que a exemplos das \gpus utilizam linguagens específicas de programação como \textit{Open Computing Language} (OpenCL) e CUDA. Além de abordar a ideia de ``dados múltiplos e instrução única'', ou seja, execução de uma mesma instrução de máquina sobre diferentes fragmentos de dados. 
 
@@ -163,7 +163,7 @@ Ilustrado pela Figura~\ref{fig:stencil}, funciona da seguinte forma. Para cada e
     \label{fig:stencil}
 \end{figure}
 
-\subsection{PSkel}
+\subsection{\pskel}
 
 O \pskel é um \fw de programação em alto nível para aplicações baseadas no
 padrão estêncil, baseado no conceito de esqueletos paralelos, oferecendo suporte para a execução dessas aplicações em
