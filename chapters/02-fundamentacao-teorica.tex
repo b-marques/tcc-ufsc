@@ -163,17 +163,105 @@ Ilustrado pela Figura~\ref{fig:stencil}, funciona da seguinte forma. Para cada e
     \label{fig:stencil}
 \end{figure}
 
-\subsection{\pskel}
+\section{\pskel}
 
 O \pskel é um \fw de programação em alto nível para aplicações baseadas no
 padrão estêncil, baseado no conceito de esqueletos paralelos, oferecendo suporte para a execução dessas aplicações em
 ambientes heterogêneos, incluindo \cpu e \gpu. \pskel oferece um interface única de programação, desacoplada do \textit{back-end} de execução, permitindo que o usuário se preocupe apenas em implementar o \textit{kernel} estêncil que descreve a computação, enquanto o \fw fica responsável pela tradução das abstrações descritas para código paralelo de baixo nível em C++, gestão de memória e transferência de dados, tudo isso de forma transparente para o usuário~\cite{CPE:CPE3479}.
+
+O \autoref{code:pskel} mostra um exemplo do método Jacobi para resolver equações matriciais~\cite{demmel97} com o \pskel. A \api do \pskel fornece estruturas genéricas para manipular os dados de entrada e saída, chamadas \texttt{Array}, \texttt{Array2D} (\autoref{code:pskel}, linhas 12--13) e \texttt{Array3D}, através do uso de \textit{templates} da linguagem de programação C++. Essas abstrações fornecem métodos que encapsulam o gerenciamento dos dados, como alocação de memória, cópia de memória e transferência de dados entre \cpu e \gpu. Além disso, fornece abstrações para definição da computação estêncil e gerenciamento de sua execução. A computação estêncil é definida na função \texttt{stencilKernel()} (\autoref{code:pskel}, linhas 1--3), ela deve ser implementada pelo usuário do \pskel, é o método específico de cada aplicação, o qual descreve como a computação será realizada sobre cada elemento da matriz de entrada e seus vizinhos. O conjunto de classes para gerenciamento da execução são \texttt{Stencil}, \texttt{Stencil2D} (\autoref{code:pskel}, linha 15) e \texttt{Stencil3D}.
+
+No exemplo fornecido, a função \texttt{stencilKernel()} será executada na GPU. O método \texttt{runIterativeGPU()} livra o usuário de escrever código específico na linguagem CUDA, necessário para excutar corretamente a computação estêncil na \gpu.
+
+\begin{figure}
+\begin{lstlisting}[
+    caption={Trecho simplificado de código estêncil com \pskel.}, 
+    label=code:pskel,
+    language=C++,
+    keywordstyle=\color{blue}\bfseries,
+    otherkeywords = {__parallel__,struct,Array2D,Stencil2D}, 
+    basicstyle=\tiny, 
+    frame = single,]
+__parallel__ void
+stencilKernel(Array2D<float> A, Array2D<float> B, 
+              struct Arguments args, int x, int y) {
+
+    B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) + A(x+1,y) + A(x-1,y) 
+             + args.beta);
+}
+        
+void jacobi(float *A, float *B, int M, int N, float alpha, 
+            float beta, int timesteps) {
+
+    Array2D<float> input(A,M,N);
+    Array2D<float> output(B,M,N);
+    struct Arguments args(alpha, beta);
+    Stencil2D<Array2D<float>, struct Arguments> stencil(input,output,args);
+    stencil.runIterativeGPU(timesteps);
+}
+\end{lstlisting}
+\end{figure}
 
 \todo[inline]{Explicar o PSkel de maneira mais detalhada (classes, métodos, kernel, com pseudo-código como no artigo do euro-par). Note, por exemplo, que na tua proposta tu falas de \texttt{Array2D}. Se isso não for explicado aqui ninguém intenderá a proposta.}
 
 \section{PSkel-MPPA}
 \label{sec:pskel-mppa}
 
-A adaptação PSkel-MPPA, é uma adaptação do \pskel proposta por~\cite{wscad2017}, ela faz uso de uma \api similar à POSIX \ipc para comunicação, e será tratada como \ipc no decorrer deste trabalho. Nela, são utilizados portais de comunicação para o envio de dados e o método de \textit{strides}  para gerenciar explicitamente o envio e recebimento de \textit{tiles}. Essa adaptação possibilita o uso do \fw PSkel com o processador \manycore \mppa.
+A adaptação PSkel-MPPA, é uma adaptação do \pskel proposta por~\cite{wscad2017}, ela faz uso de uma \api similar à POSIX \ipc para comunicação, e será tratada como \ipc no decorrer deste trabalho. Nela, são utilizados portais de comunicação para o envio de dados e o método de \textit{strides}  para gerenciar explicitamente o envio e recebimento de \textit{tiles}.
+
+\begin{figure}
+    \centering
+    \caption{Esquemático da proposta \pskelmppa.}
+    \includegraphics[width=1\textwidth]{figs/visaoGeralPSKELMPPATrabalhador.pdf} \\
+    \legend{Fonte - {\cite{Podesta:TCC}}}
+    \label{fig:visaoGeralPSkelMPPA}
+\end{figure}
+
+
+A Figura~\ref{fig:visaoGeralPSkelMPPA} ilustra, a adaptação
+desenvolvida. É empregado o modelo mestre-trabalhador, que é um dos padrões de computação paralela que pode ser utilizado quando existem múltiplos núcleos de processamento. O processo mestre é executado no \emph{cluster} de \io conectado a memória LPDDR3, aonde os dados de entrada e saída (os \emph{Array2Ds}) são alocados, enquanto os processos dos trabalhadores são executados nos \emph{clusters} de computação (um processo trabalhador por \emph{cluster} de computação) para realizar a computação estêncil. Além disso, o processo mestre enviará dados para os processos
+trabalhadores e aguardará os resultados da computação, ao receber os resultados a execução é finalizada ou é preparado o próximo laço de iteração.
+
+A comunicação realizada entre os processos mestre e trabalhadores é realizada por meio de portais, provenientes de uma \api proprietária de baixo nível do \mppa, similar à POSIX IPC. Os portais são responsáveis por realizar escrita e leitura de maneira remota, para isso um processo que deseja comunicar-se deve criar um portal com uma classificação (\textit{tag}) e relacioná-lo a um espaço de endereçamento, para posteriormente realizar leitura ou escrita no endereço associado.
+
+A memória nos \textit{clusters} de computação (2MB) é limitada, devido a isso a matriz de entrada da computação (\textit{Array2D}) é particionado em tamanhos menores denominados \textit{tiles}, que possuem tamanho fixo definido pelo usuário para serem enviados aos \textit{clusters}. 
+
+As operações sobre \textit{tiles} e matrizes são realizadas sobre endereços de memória. Devido a restrição da \api e da \noc no \mppa, os dados armazenados em cada \textit{tile} precisam estar contíguos em memória para serem transferidos
+pela \noc. Com o objetivo de evitar cópias locais de dados, utiliza-se o conceito de \textit{strides}. Cada \textit{stride} é uma parte contígua do \texttt{Array} original, sendo determinado por deslocamentos (\textit{offsets}) especificados durante a
+execução. Os deslocamentos são dinâmicos e dependem dos \textit{tiles} sendo computados. Essas informações são conhecidas pelo processo mestre por meio da utilização da classe \texttt{StencilTiling}, e este as repassa aos processos trabalhadores \cite{Podesta:TCC}.
+
+\begin{figure}[t]
+	\centering
+    \caption{Exemplo do funcionamento do método \textit{strides} no \mppa.}
+	\includegraphics[width=0.9\textwidth]{figs/stridesImage.pdf} \\
+    \legend{Fonte: {\cite{Podesta:TCC}}}
+	\label{fig:strides}
+\end{figure}
+
+
+A Figura~\ref{fig:strides} ilustra o processo de comunicação com o método \textit{strides} para o caso de uma matriz de entrada de tamanho 6x6, \textit{tiles} de tamanho 3x3 e 4 \textit{clusters}. Ao computar todos os deslocamentos, o método irá enviar diretamente, via portal, os dados especificados pelo endereço inicial do \textit{tile} e pelos saltos na memória com a área útil especificada. Com isso, é possível enviar de forma contígua e direta os \textit{tiles} a outro processo, sem a necessidade de cópias locais \cite{Podesta:TCC}.
+
+
+Quando se trata de particionamento de computação estêncil, é necessário tratar as depedências de vizinhança provenientes do padrão paralelo estêncil, antes de particionar os dados de entrada.
+
+A técnica de \textit{tiling} trapezoidal é utilizada para tratar as dependências de vizinhança, o que resulta na computação e presença redundante de dados~\cite{Rocha:2017}. A definição formal está ilustrada a seguir.
+Seja $A$ uma matriz de dados 2D, com dimensões $\textrm{dim}(A) = (w, h)$, aonde $w$ e $h$ são, respectivamente, sua largura e altura.
+Utilizando \emph{tiles} de dimensões $(w^\prime, h^\prime)$ temos $\lceil\frac{w}{w^\prime}\rceil\lceil\frac{h}{h^\prime}\rceil$ como sendo os possíves \emph{tiles} de $A$.
+Seja $A_{i,j}$ um único \emph{tile}, onde $0\leq i < \lceil\frac{w}{ w^\prime}\rceil$ e $0\leq j < \lceil\frac{h}{ h^\prime}\rceil$.
+$A_{i,j}$ possui um deslocamento de $(i w^\prime,j h^\prime)$ em relação ao canto superior esquerdo de $A$ e $\textrm{dim}(A_{i,j}) = (\min\{w^\prime, w-i w^\prime\}, \min\{h^\prime, h-j h^\prime\})$.
+Esse deslocamento atua como um indexador necessário para acessar os elementos de um \emph{tile}.
+
+A Figura~\ref{fig:gputile} mostra a representação gráfica dessa técnica. Um \emph{tile} lógico (linha contínua interna) está contido em uma matriz de dados 2D (linha pontilhada externa) com deslocamento vertical e horizontal definidos por $j h^\prime$ e $i w^\prime$. Se $t$ iterações de uma aplicação estêncil devem ser executadas, é possível computar $t^\prime$ consecutivas iterações em $A_{i,j}$ ($t^\prime \in \left[1,t\right]$) se precissar de qualquer troca de dados entre \emph{tiles} adjacentes (também conheçido como iterações internas). Assim, o \emph{tile} lógico ($A_{i,j}$) precisa ser engordado, com o acréscimo de uma \emph{ghost zone} (área entre a linha sólida interna e externa), o que inclui a \emph{halo region} (a área entre a linha sólida interna e a linha pontilhada interna). Seja $r$ o mais distante deslocamento necessário para a vizinhança definida pela máscara estêncil. A área de alcance $r$ que define a vizinhança é denominada \textit{halo region}. O número de \emph{halo regions} adjacentes que compõe a \emph{ghost zone} é proporcional a $t^\prime$.
+%
+Assim, \emph{tile} engordado $A^\ast_{i,j}$ possui deslocamentos $(\max\{iw^\prime - rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativos a $A$ \cite{Podesta:TCC}. 
+
+\begin{figure}
+	\centering
+	\caption{Técnica de \textit{tiling} 2D.}
+	\includegraphics[width=0.5\textwidth]{figs/tile.pdf} \\
+	\legend{Fonte: {\cite{Rocha:2017}}}
+	\label{fig:gputile}
+\end{figure}
+
 
 \todo[inline]{O que são os portais? É importante explicar como a comunicação era feita na versão anterior. Com isso, tu terás a base para explicar como tu ``pretendes'' otimizar a comunicação usando a nova API. O que são os \textit{tiles}? Explique melhor a solução existente. Para isso, pegue o texto do Capítulo 4 e coloque aqui, adaptando-o quando necessário.}
