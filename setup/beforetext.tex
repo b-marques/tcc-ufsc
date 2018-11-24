@@ -105,10 +105,11 @@
     % \listoftables*
 
     % inserir códigos fonte
-    % \ifforcedinclude\else\cleardoublepage\fi
-    % \addtotextpreliminarycontent{\lang{List of Source Codes}{Lista de Códigos Fonte}}
-    % \pdfbookmark[0]{\lstlistingname}{lol}
-    % \lstlistoflistings*
+    \counterwithout{lstlisting}{chapter}
+    \ifforcedinclude\else\cleardoublepage\fi
+    \addtotextpreliminarycontent{\lang{List of Source Codes}{Lista de Códigos Fonte}}
+    \pdfbookmark[0]{\lstlistingname}{lol}
+    \lstlistoflistings*
 \fi
 
 
