@@ -31,7 +31,7 @@ Essa primeira etapa do fluxo de execução diferencia-se da anteriormente presen
 A fase de computação consiste da execução do \kernel estêncil pelos processos trabalhadores. As seguintes três principais etapas são realizadas para computar cada \tile atribuído a um processo trabalhador: 1) o \tile alargado é extraído do dado de entrada alocado na \lpddr e transferido para a memória local do \cluster de computação para ser processado; 2) $t^\prime$ iterações do \kernel estêncil (iterações internas) são executadas pelo processo trabalhador sobre o \tile alargado; e 3) o \tile lógico resultante é transferido de volta da memória local do \cluster de computação para a sua posição correspondente na \lpddr. Assim que todos os \tiles atribuídos a cada processo trabalhador forem computados com sucesso, todos os processos trabalhadores irão sincronizar em uma barreira global, pois os processos trabalhadores precisarão dos dados computados pelos outros durante as $t^\prime$ iterações para resolverem as dependências de vizinhança das próximas iterações a serem computadas. 
 Foi usada a função \texttt{mppa\_rpc\_barrier\_all()} (proveniente da \api \async) para esse propósito. Todo este processo anteriormente descrito é repetido até que o número total de iterações definido pelo usuário ($t$) seja alcançado.
 
-As etapas acima mencionadas estão retratadas na Figura~\ref{fig:block2d}, para sua implementação foi utilizada a nova \api de comunicação asíncrona (\async). Abaixo elas são descritas em mais detalhes:
+As etapas acima mencionadas estão retratadas na \autoref{fig:block2d}, para sua implementação foi utilizada a nova \api de comunicação asíncrona (\async). Abaixo elas são descritas em mais detalhes:
 
 \begin{description}
 
@@ -46,6 +46,36 @@ As etapas acima mencionadas estão retratadas na Figura~\ref{fig:block2d}, para 
 \section{Otimização da computação dos elementos de borda da matriz de dados}
 \label{sec:otimizacao-bordas}
 
-Ao realizar a computação de elementos próximos as bordas, é feita uma verificação em cada elemento para determinar se ele pertence a borda ou não e tratá-lo conforme necessário. Elementos de computação que beiram a borda física da matriz de entrada precisam acessar os elementos vizinhos, que neste caso são grande parte elementos inacessíveis fisicamente o que pode acarretar em erros de acesso a memória, como a falha de segmentação. A atual implementação realiza no processo de computação esta verificação para cada elemento do \tile presente no \cluster de computação, o que pode degradar seu desempenho. Com isso, pretende-se abordar uma nova maneira de tratamento para os elementos do \tile que beiram a borda da matriz de dados. 
+Ao realizar a computação de elementos próximos as bordas, é feita uma verificação em cada elemento para determinar se ele pertence a borda ou não e tratá-lo conforme necessário. Elementos de computação que beiram a borda física da matriz de entrada precisam acessar os elementos vizinhos, que neste caso são grande parte elementos inacessíveis fisicamente o que pode acarretar em erros de acesso a memória, como a falha de segmentação. A implementação \ipc realiza no processo de computação esta verificação para cada elemento do \tile presente no \cluster de computação, o que pode degradar seu desempenho. Com isso, pretende-se abordar uma nova maneira de tratamento para os elementos do \tile que beiram a borda da matriz de dados. 
 
-A ideia é definir uma área de trabalho para cada \tile que será computado e gerenciar essa área ao longo das iterações, isso reduziria significativamente o atual número de verificações que ocorre em cada elemento do \tile e em cada iteração, pois ao partir pro processo de computação o \cluster já possui as coordenadas sobre as quais ele deve realizar sua computação, sem precisar verificar elemento por elemento. No caso \tiles localizados centralmente na matriz sem contato com a borda, esta área de trabalho seria a máxima possível sem sofrer restrições.
+\begin{figure}
+  \begin{lstlisting}[
+      caption={Trecho de código que define a área de trabalho.}, 
+      label=code:workarea,
+      language=C++,
+      keywordstyle=\color{blue}\bfseries,
+      otherkeywords = {__parallel__,struct,Array2D,Stencil2D}, 
+      basicstyle=\tiny, 
+      frame = single,]
+struct work_area_t {
+int x_init,  /* X inicial da área de trabalho */
+    y_init,  /* Y inicial da área de trabalho */
+    x_final, /* X final da área de trabalho */
+    y_final; /* Y final da área de trabalho */
+    std::vector<int> dist_to_border; /* Vetor que define as distâncias entre os elementos mais externos e as bordas */
+};
+  \end{lstlisting}
+\end{figure}
+
+A ideia é definir uma área de trabalho para cada \tile que será computado e gerenciar essa área ao longo das iterações, isso reduziria significativamente o atual número de verificações que ocorre em cada elemento do \tile e em cada iteração, pois ao partir pro processo de computação o \cluster já possui as coordenadas sobre as quais ele deve realizar sua computação, sem precisar verificar elemento por elemento. No caso dos \tiles localizados centralmente na matriz sem contato com a borda, esta área de trabalho seria a máxima possível sem sofrer restrições.
+Esta área de trabalho é definida por uma \textit{struct}, que é um tipo de dado composto na qual uma lista de variáveis podem ser declaradas para mais tarde serem acessadas através de um ponteiro único para cada uma. O \autoref{code:workarea} apresenta esta estrutura, e a \autoref{fig:workarea} ilustra seu uso.
+
+Nesta estrutura são definias duas coordenadas, \texttt{(x\_inicial, y\_inicial)} e \texttt{(x\_final,y\_final)} que delimitam a área de trabalho. O vetor \texttt{dist\_to\_border} contém a distância entre os elementos mais externos e as bordas da matriz de dados, e com base nesses valores define os desalocamentos necessários a serem aplicados às coordenadas que delimitam a área de trabalho. Todos esses cálculos e definições encontram-se encapsulados dentro do \textit{back-end} do \pskelmppa \async, o desenvolvedor que faz uso do framework não precisa lidar com estes detalhes. 
+
+\begin{figure}
+  \centering
+  \caption{Ilustração área de trabalho (\textit{struct work\_area})}
+  \includegraphics[width=0.7\textwidth]{figs/work_area.pdf}
+  \label{fig:workarea}
+\end{figure}
+

@@ -76,6 +76,7 @@ section=TITLE,  % Título de seções em caixa alta
 
 \usepackage{todonotes}
 \usepackage{pgfgantt}
+\usepackage{subcaption}
 
 %----------------------------------------------------------------------------------------
 %   LOAD UFSCThesis style
@@ -177,7 +178,10 @@ section=TITLE,  % Título de seções em caixa alta
 % Insert here the keyworkds in english
 \newcommand{\palavraschaveingles}
 {%
-    \item Keyword 1. \item Keyword 2. \item Keyword 3.
+    \item \Manycore.
+    \item \mppa.
+    \item High-performance computing.
+    \item Efficient energy.
 }
 
 
@@ -268,8 +272,11 @@ section=TITLE,  % Título de seções em caixa alta
     % Capitulo de Desenvolvimento
     \include{chapters/04-otimizacao-pskelmppa}
 
+    % Capitulo de Resultados
+    \include{chapters/05-resultados}
+
     % Capitulo de Cronograma
-     \include{chapters/05-cronograma}
+    %  \include{chapters/05-cronograma}
     
     % Capitulo de Conclusão
      \include{chapters/06-conclusao}
