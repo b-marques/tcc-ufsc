@@ -109,7 +109,12 @@ Nesta seção será analisada a escalabilidade do \pskelmppa na versão \async. 
 \section{\mppa \async \textit{vs.} \mppa \ipc}
 \label{sec:async_vs_ipc}
 
-Esta seção apresenta a comparação entre a nova versão do \pskelmppa (\async) com a versão antiga do \pskelmppa (\ipc). A \autoref{fig:async_vs_ipc} apresenta a comparação de tempo de execução e consumo de energia entre estas versões. Nesse experimento, foi utilizada uma matriz de dados de tamanho \ind, \tiles de tamanho \tilec e \tiled \todo[inline]{como vamos justificar a diferença no tamanho dos tiles já que a memória disponível continua a mesma?}(apenas para a \async), 16 \clusters e 16 \pes por \cluster. O número de iterações utilizado foi $t = 30$. Os resultados obtidos representam a média de 5 execuções com o desvio padrão médio menor que $1\%$, o número de iterações e execuções visa manter paridade com os resultados gerados na versão \ipc~\cite{Podesta:TCC}.
+Esta seção apresenta a comparação entre a nova versão do \pskelmppa (\async) com a versão antiga do \pskelmppa (\ipc). 
+A \autoref{fig:async_vs_ipc} apresenta a comparação de tempo de execução e consumo de energia entre ambas versões.
+Nesse experimento, foi utilizada uma matriz de dados de tamanho \ind, \tiles de tamanho \tilec e \tiled (apenas para a \async), 16 \clusters e 16 \pes por \cluster.
+A versão \ipc recorria à alocação de dados temporários para auxiliar no envio/recebimento de dados dos \clusters de computação, consumindo parcela significativa da já escassa memória local e limitando o tamanho máximo dos \tiles.
+Esta prática foi descontiuada na versão \async com o uso da nova \api, viabilizando o aumento do tamanho máximo dos \tiles para \tiled.
+O número de iterações utilizado foi $t = 30$. Os resultados obtidos representam a média de 5 execuções com o desvio padrão médio menor que $1\%$, o número de iterações e execuções visa manter paridade com os resultados gerados na versão \ipc~\cite{Podesta:TCC}. 
 
 \begin{figure}
   \centering
