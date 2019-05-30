@@ -55,8 +55,9 @@ Devido ao uso da técnica de \textit{tiling} trapezoidal, é possível definir c
 
 \begin{figure}
   \centering
-	\caption{Estudo empírico para encontrar o melhor valor para $t^\prime$. Melhor troca é alcançada com $t^\prime=10$.}
+	\caption{Estudo empírico para encontrar o melhor valor para $t^\prime$. Melhor \textit{tradeoff} é alcançado com $t^\prime=10$.}
 	\includegraphics[width=0.7\textwidth]{figs/MPPAPlotIterationsAPI100It16InnerIt.pdf}
+  \legend{Fonte: o autor.}
 	\label{fig:tprime}
 \end{figure}
 
@@ -71,7 +72,7 @@ Outrossim, é observado que ao aumentar o tamanho do \tile o desempenho das apli
 
 \begin{figure}
   \centering
-  \caption{\textit{Tiles} vs. tempo de execução}
+  \caption{\textit{Tiles} vs. tempo de execução.}
   \begin{subfigure}{0.338\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figs/MPPAPlotAPIconvolutionTimeTiles.pdf}
@@ -90,6 +91,7 @@ Outrossim, é observado que ao aumentar o tamanho do \tile o desempenho das apli
     \caption{\jacobi}
     \label{fig:tilesJacobi}
   \end{subfigure}
+  \legend{Fonte: o autor.}
   \label{fig:tiles}
 \end{figure}
 
@@ -103,6 +105,7 @@ Nesta seção será analisada a escalabilidade do \pskelmppa na versão \async. 
 	\centering
 	\caption{Escalabilidade.}
 	\includegraphics[width=.6\textwidth]{figs/MPPAPlotScalabilityAPI.pdf}
+  \legend{Fonte: o autor.}
 	\label{fig:escalabilidade}
 \end{figure}
 
@@ -118,7 +121,7 @@ O número de iterações utilizado foi $t = 30$. Os resultados obtidos represent
 
 \begin{figure}[t]
   \centering
-  \caption{\async \textit{vs.} \ipc}
+  \caption{\async \textit{vs.} \ipc.}
   \begin{subfigure}{0.494\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figs/ipc_vs_async_exec_time.pdf}
@@ -129,6 +132,7 @@ O número de iterações utilizado foi $t = 30$. Os resultados obtidos represent
     \includegraphics[width=1\textwidth]{figs/ipc_vs_async_energy.pdf}
     \label{fig:compara-energia}
   \end{subfigure}
+  \legend{Fonte: o autor.}
   \label{fig:async_vs_ipc}
 \end{figure}
 
@@ -149,6 +153,7 @@ O consumo de energia segue um comportamento similar, uma vez que, menos tempo ex
     \includegraphics[width=1\textwidth]{figs/ComparisonEnergyTiles10.pdf}
     \label{fig:compara-energia-async-cpu-gpu}
   \end{subfigure}
+  \legend{Fonte: o autor.}
   \label{fig:async_vs_cpu_gpu}
 \end{figure}
 
