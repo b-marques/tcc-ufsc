@@ -12,7 +12,7 @@
 
 Este capítulo apresenta as plataformas de execução das aplicações, aplicações utilizadas, o estudo empírico do número de iterações internas ($t^\prime$), o impacto do tamanho do \tile no desempenho e os resultados da avaliação de desempenho e consumo energético obtidos, comparando-os com a versão \ipc apresentada em~\cite{Podesta:TCC} e com implementações disponíveis no \pskel para plataformas \multicore (\cpu) e \gpu.
 
-\section{PLATAFORMAS}
+\section{Plataformas}
 \label{sec:plataformas}
 
 No \mppa, as medições referentes ao consumo de energia foram coletadas através de sensores disponíveis na plataforma, que englobam os \clusters, a memória (\lpddr e memória local de cada \cluster), subsistemas de \io e a \noc. A compilação foi realizada utilizando GCC 5.4 (\mppa e \cpu) e NVCC versão 8.0 (\gpu) com as \textit{flags} de otimização \texttt{-O3} (todas as plataformas), \texttt{-march=native -mtune=native -ftree-vectorize} (\cpu e \gpu) e \texttt{-arch=sm\_35} (\gpu). As implementações para \cpu e \gpu foram executadas nas plataformas abaixo descritas.
@@ -25,7 +25,7 @@ No \mppa, as medições referentes ao consumo de energia foram coletadas atravé
 
 \end{itemize}
 
-\section{APLICAÇÕES}
+\section{Aplicações}
 \label{sec:aplicacoes}
 
 As aplicações utilizadas foram \textit{Fur}, \textit{GoL}, \textit{Jacobi} e \textit{Convolution}. Sendo as três primeiras utilizadas na comparação \async \textit{vs.} \ipc e as três últimas na comparação \async \textit{vs.} \gpu \textit{vs.} \cpu.
