@@ -1,0 +1,19 @@
+% The \phantomsection command is needed to create a link to a place in the document that is not a
+% figure, equation, table, section, subsection, chapter, etc.
+%
+% When do I need to invoke \phantomsection?
+% https://tex.stackexchange.com/questions/44088/when-do-i-need-to-invoke-phantomsection
+\phantomsection
+
+% ---
+\chapter{Conclusão}
+\label{cap:conclusao}
+\phantomsection
+
+É irrefutável a busca pelo ganho de desempenho atrelado ao aumento da eficiência energética. O futuro persegue incessantemente dispositivos de computação cada vez mais potentes e com menor consumo de energia. Neste trabalho essa busca se traduz na otimização de um \textit{framework} desenvolvido para o processador \mppa que é um \chip de computação de alto desempenho voltado ao baixo consumo energético. 
+
+O desenvolvimento de aplicações otimizadas para processadores \textit{manycore} de baixa potência é bastante desafiador devido a fatores importantes tais como a existência de um modelo de programação híbrido, capacidade limitada de memória no \textit{chip}, ausência de coerência de \textit{cache}, entre outros. A nova \api de comunicação assíncrona facilita o desenvolvimento do \textit{back-end} do \fw através do seu alto nível de abstração apresentado, contribuindo também para manutenabilidade do código fonte.
+
+Neste trabalho foi apresentada uma nova versão otimizada do \fw \pskel para o processador \mppa. Os resultados mostraram que a nova versão obteve ganhos de desempenho de até $33.48$x e uma redução no consumo de energia de até $8.84$x, em comparação com a solução inicial proposta em~\cite{Podesta:TCC}. Além disso, a solução mostrou-se competitiva quando comparada com outras plataformas de computação paralela, como \multicore (\cpu) e placas gráficas (\gpu). 
+
+Como trabalhos futuros sugere-se a implementação para dar suporte a matrizes tridimensionais, assim como implementar técnicas de \textit{prefetching} visando melhorar o desempenho do tempo de execução das aplicações. Além disso, sugere-se realizar comparações e análises com outras plataformas além da \cpu e \gpu como, por exemplo, outros processadores \manycore.
